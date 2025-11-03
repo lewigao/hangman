@@ -36,8 +36,8 @@ function guessLetter() {
     }
 
     // ##################### TASK 4 #####################:
-    // only applies game logic if they start a new game
-    if (gameStarted === true && guess_count > 0) {
+    // only allows game logic to run if they start a new game
+    if (gameStarted === true && guess_count > 0) { // ##################### TASK 2a #####################
         if (word.indexOf(letter) < 0 && letter != "" && letter != " ") { // look for the index of the guessed letter in our "word", if it's not: decrement
             guess_count--;
         }
@@ -61,14 +61,14 @@ function guessLetter() {
 // self-explanatory
 function checkWin() {
     if (spaced_word == document.getElementById("clue").innerHTML) {
-        // ##################### TASK 2a #####################:
+        // ##################### TASK 2b #####################:
         guess_count = 0;
         return true;
     }
+    return false;
 }
 
 function updatePage() {
-    // #####################T TASK 3 #####################:
     // updatePage() is only run after "a game is started + user has sufficient guesses + they guess a letter", and when a new game starts
     var clueString = "";
     var userInfo = document.getElementById("usedletters");
@@ -100,16 +100,17 @@ function updatePage() {
     console.log(guess_count);
     console.log(image);
 
+    // #####################T TASK 3 #####################:
     // updates the guess area
     var input = document.getElementById("guess");
     input.value = "";
 
     // ##################### TASK 1 #####################:
-    if (checkWin() === false && guess_count == 0) /* TASK 2b #####################*/ {
+    if (checkWin() == false && guess_count == 0) /* TASK 2c #####################*/ {
         userInfo.style.color = "red";
         userInfo.innerHTML = "Start a new game, you're done.";
     }
-    else if (checkWin() === true) {
+    else if (checkWin() == true) {
         userInfo.style.color = "green";
         userInfo.innerHTML = "You won!";
     }
