@@ -3,7 +3,7 @@ var word = "";
 var guesses = "";
 MAX_GUESSES = 6;
 var guess_count = MAX_GUESSES;
-var spaced_word = "";
+var spaced_word;
 
 function newGame() {
     var randomIndex = parseInt(Math.random() * POSSIBLE_WORDS.length);
@@ -23,30 +23,33 @@ function newGame() {
 function guessLetter() {
     var input = document.getElementById("guess")
     var letter = input.value;
+    var userInfo = document.getElementById("reminder");
 
     var gameStarted = false;
 
     // checks that a word has been chosen, which means a game has started
     if (word == "") {
-        var userInfo = document.getElementById("reminder");
         userInfo.innerHTML = "Please start a new game before trying to guess";
     }
     else if (word != "") {
         gameStarted = true;
     }
 
+    // ##################### TASK 4 #####################:
     // only applies game logic if they start a new game
     if (gameStarted === true && guess_count > 0) {
-        var userInfo = document.getElementById("reminder");
-        var guess = document.getElementById("guess");
-
-        if (word.indexOf(letter) < 0) { // look for the index of the guessed letter in our "word", if it's not: decrement
+        if (word.indexOf(letter) < 0 && letter != "" && letter != " ") { // look for the index of the guessed letter in our "word", if it's not: decrement
             guess_count--;
         }
 
+        // ##################### TASK 5 #####################:
         // disallows guessing the same letter or blank
-        if (guesses.includes(letter)) {
+        if (guesses.includes(letter) && letter != "" && letter != " ") {
             userInfo.innerHTML = `You've already guessed "${letter}", try another letter`;
+        }
+        else if (letter == "" || letter == " ") {
+            userInfo.innerHTML = "And you've got a blank space ba-by";
+            input.innerHTML = "";
         }
         else {
             guesses += letter;
@@ -58,13 +61,15 @@ function guessLetter() {
 // self-explanatory
 function checkWin() {
     if (spaced_word == document.getElementById("clue").innerHTML) {
+        // ##################### TASK 2a #####################:
         guess_count = 0;
         return true;
     }
-    return false;
 }
 
 function updatePage() {
+    // #####################T TASK 3 #####################:
+    // updatePage() is only run after "a game is started + user has sufficient guesses + they guess a letter", and when a new game starts
     var clueString = "";
     var userInfo = document.getElementById("usedletters");
     document.getElementById("reminder").innerHTML = "";
@@ -99,12 +104,13 @@ function updatePage() {
     var input = document.getElementById("guess");
     input.value = "";
 
-        if (checkWin() == false && guess_count == 0) {
-            userInfo.style.color = "red";
-            userInfo.innerHTML = "Start a new game, you're done.";
-        }
-        else if (checkWin() == true) {
-            userInfo.style.color = "green";
-            userInfo.innerHTML = "You have won!";
+    // ##################### TASK 1 #####################:
+    if (checkWin() === false && guess_count == 0) /* TASK 2b #####################*/ {
+        userInfo.style.color = "red";
+        userInfo.innerHTML = "Start a new game, you're done.";
+    }
+    else if (checkWin() === true) {
+        userInfo.style.color = "green";
+        userInfo.innerHTML = "You won!";
     }
 }
